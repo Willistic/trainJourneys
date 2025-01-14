@@ -8,7 +8,11 @@ interface SearchResultsProps {
 
 const SearchResults: React.FC<SearchResultsProps> = ({ journeys, error }) => {
 	if (error) {
-		return <div>Error: {error}</div>;
+		return (
+			<span className='error text-center block'>
+				An unexpected error occurred: {error}
+			</span>
+		);
 	}
 
 	if (journeys.length === 0) {

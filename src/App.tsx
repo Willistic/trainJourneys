@@ -1,8 +1,8 @@
 import React, { useState } from "react";
+import { searchJourneys } from "./api/searchJourneys";
+import Loader from "./components/Loader";
 import SearchForm from "./components/SearchForm";
 import SearchResults from "./components/SearchResults";
-import Loader from "./components/Loader";
-import { searchJourneys } from "./api/searchJourneys";
 import { JourneyParameters, Journeys } from "./types/types";
 
 const App: React.FC = () => {

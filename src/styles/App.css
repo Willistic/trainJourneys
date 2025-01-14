@@ -72,3 +72,12 @@ span.error {
 	color: red;
 	font-size: 12px;
 }
+
+.text-center {
+	text-align: center;
+}
+
+.block {
+	width: 100%;
+	display: block;
+}

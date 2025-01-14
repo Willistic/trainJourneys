@@ -1,7 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import type { FormErrors, JourneyParameters } from "../types/types";
 import { parseAsInteger, useQueryState } from "nuqs";
+import React, { useEffect, useRef, useState } from "react";
 import useLatest from "../hooks/useLatest";
+import type { FormErrors, JourneyParameters } from "../types/types";
 import { isDateInPast } from "../utils";
 
 interface SearchFormProps {
@@ -138,9 +138,6 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 			!destination ||
 			!isValidLocation(destination)
 		) {
-			/* setErrorMessage(
-				"Origin and Destination should only contain letters and spaces."
-			); */
 			return;
 		}
 
@@ -156,75 +153,86 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
+		<form onSubmit={handleSubmit} aria-labelledby='search-form-title'>
+			<h1 id='search-form-title'>Search for a Journey</h1>
 			<div>
-				<label>
-					Origin: <span className='required'>*</span>
-					<input
-						type='text'
-						value={origin || ""}
-						onChange={(e) => {
-							setOrigin(e.target.value);
-							formChanged.current = true;
-						}}
-						required
-					/>
-					{errors.origin && (
-						<span className='error'>{errors.origin}</span>
-					)}
-				</label>
+				<label htmlFor='origin'>Origin</label>
+				<input
+					id='origin'
+					type='text'
+					value={origin || ""}
+					onChange={(e) => {
+						setOrigin(e.target.value);
+						formChanged.current = true;
+					}}
+					aria-invalid={!!errors.origin}
+					aria-describedby='origin-error'
+					required
+				/>
+				{errors.origin && (
+					<span id='origin-error' className='error'>
+						{errors.origin}
+					</span>
+				)}
 			</div>
 			<div>
-				<label>
-					Destination: <span className='required'>*</span>
-					<input
-						type='text'
-						value={destination || ""}
-						onChange={(e) => {
-							setDestination(e.target.value);
-							formChanged.current = true;
-						}}
-						required
-					/>
-					{errors.destination && (
-						<span className='error'>{errors.destination}</span>
-					)}
-				</label>
+				<label htmlFor='destination'>Destination</label>
+				<input
+					id='destination'
+					type='text'
+					value={destination || ""}
+					onChange={(e) => {
+						setDestination(e.target.value);
+						formChanged.current = true;
+					}}
+					aria-invalid={!!errors.destination}
+					aria-describedby='destination-error'
+					required
+				/>
+				{errors.destination && (
+					<span id='destination-error' className='error'>
+						{errors.destination}
+					</span>
+				)}
 			</div>
 			<div>
-				<label>
-					Travel Date: <span className='required'>*</span>
-					<input
-						type='date'
-						value={date || ""}
-						onChange={handleDateChange}
-						required
-					/>
-					{errors.date && (
-						<span className='error'>{errors.date}</span>
-					)}
-				</label>
-
-				{/* Show error message */}
+				<label htmlFor='date'>Date</label>
+				<input
+					id='date'
+					type='date'
+					value={date || ""}
+					onChange={handleDateChange}
+					aria-invalid={!!errors.date}
+					aria-describedby='date-error'
+					required
+				/>
+				{errors.date && (
+					<span id='date-error' className='error'>
+						{errors.date}
+					</span>
+				)}
 			</div>
 			<div>
-				<label>
-					Passengers: <span className='required'>*</span>
-					<input
-						type='number'
-						value={passengers || undefined}
-						onChange={(e) => {
-							setPassengers(Number(e.target.value));
-							formChanged.current = true;
-						}}
-						min='1'
-						max='10'
-						required
-					/>
-					{errors.passengers && (
-						<span className='error'>{errors.passengers}</span>
-					)}
-				</label>
+				<label htmlFor='passengers'>Passengers</label>
+				<input
+					id='passengers'
+					type='number'
+					value={passengers || undefined}
+					onChange={(e) => {
+						setPassengers(Number(e.target.value));
+						formChanged.current = true;
+					}}
+					aria-invalid={!!errors.passengers}
+					aria-describedby='passengers-error'
+					min='1'
+					max='10'
+					required
+				/>
+				{errors.passengers && (
+					<span id='passengers-error' className='error'>
+						{errors.passengers}
+					</span>
+				)}
 			</div>
 			<button type='submit' disabled={!isValid}>
 				Search
