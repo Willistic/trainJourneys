@@ -155,7 +155,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 	return (
 		<form onSubmit={handleSubmit} aria-labelledby='search-form-title'>
 			<h1 id='search-form-title'>Search for a Journey</h1>
-			<div>
+			<div className='flex-col'>
 				<label htmlFor='origin'>Origin</label>
 				<input
 					id='origin'
@@ -175,7 +175,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 					</span>
 				)}
 			</div>
-			<div>
+			<div className='flex-col'>
 				<label htmlFor='destination'>Destination</label>
 				<input
 					id='destination'
@@ -195,7 +195,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 					</span>
 				)}
 			</div>
-			<div>
+			<div className='flex-col'>
 				<label htmlFor='date'>Date</label>
 				<input
 					id='date'
@@ -212,7 +212,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 					</span>
 				)}
 			</div>
-			<div>
+			<div className='flex-col'>
 				<label htmlFor='passengers'>Passengers</label>
 				<input
 					id='passengers'

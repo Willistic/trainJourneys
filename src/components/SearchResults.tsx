@@ -9,14 +9,18 @@ interface SearchResultsProps {
 const SearchResults: React.FC<SearchResultsProps> = ({ journeys, error }) => {
 	if (error) {
 		return (
-			<span className='error text-center block'>
+			<span className='error text-center block  margin-top-large'>
 				An unexpected error occurred: {error}
 			</span>
 		);
 	}
 
 	if (journeys.length === 0) {
-		return <div>No results</div>;
+		return (
+			<div className='block center text-center margin-top-large'>
+				No results
+			</div>
+		);
 	}
 
 	// Helper function to format dates in dd-mm-yyyy format
@@ -35,8 +39,8 @@ const SearchResults: React.FC<SearchResultsProps> = ({ journeys, error }) => {
 	};
 
 	return (
-		<div>
-			<h2>Possible Journeys</h2>
+		<div className='table-container'>
+			<h2 className='text-center'>Possible Journeys</h2>
 			<table>
 				<thead>
 					<tr>
