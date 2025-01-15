@@ -16,8 +16,9 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 		"passengers",
 		parseAsInteger
 	);
+
 	// This variable will tell us whether the user has started typing or not
-	// We'll use this to delay the validation until the user has interacted with the form
+	// I'll use this to delay the validation until the user has interacted with the form
 	const formChanged = useRef(false);
 	const [errors, setErrors] = useState<FormErrors>({
 		origin: null,
@@ -80,10 +81,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 	useEffect(() => {
 		if (!formChanged.current) return;
 		if (!date || isDateInPast(new Date(date))) {
-			setErrors((prev) => ({
-				...prev,
-				date: "Date is required and must be in the future!",
-			}));
+			setErrors((prev) => ({...prev, date: "Date is required and must be in the future!"}));
 		} else {
 			setErrors((prev) => ({ ...prev, date: null }));
 		}
@@ -117,15 +115,6 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 		const selectedDate = e.target.value;
 		formChanged.current = true;
 		setDate(selectedDate);
-
-		// Validate if the selected date is in the past
-		const today = new Date().toISOString().split("T")[0]; // Get the current date in yyyy-mm-dd format
-
-		if (selectedDate < today) {
-			// setErrorMessage("It has to be a present or a future date");
-		} else {
-			// setErrorMessage(null); // Clear the error if the date is valid
-		}
 	};
 
 	const handleSubmit = (e: React.FormEvent) => {
@@ -154,7 +143,6 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 
 	return (
 		<form onSubmit={handleSubmit} aria-labelledby='search-form-title'>
-			<h1 id='search-form-title'>Search for a Journey</h1>
 			<div className='flex-col'>
 				<label htmlFor='origin'>Origin</label>
 				<input
@@ -217,7 +205,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 				<input
 					id='passengers'
 					type='number'
-					value={passengers || undefined}
+					value={passengers || ""}
 					onChange={(e) => {
 						setPassengers(Number(e.target.value));
 						formChanged.current = true;
