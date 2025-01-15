@@ -3,7 +3,7 @@ import { JourneyParameters, Journeys } from '../types/types';
 export const searchJourneys = async (
   parameters: JourneyParameters
 ): Promise<Journeys> => {
-  // Mock data with origin and destination fields
+  // Mock data
   const mockJourneys: Journeys = [
     {
       origin: 'Enschede',
