@@ -28,8 +28,8 @@ export const searchJourneys = async (
     {
       origin: 'Enschede',
       destination: 'Almelo',
-      departure: new Date(new Date().getTime() + 9 * 60 * 60 * 1000),
-      arrival: new Date(new Date().getTime() + 9 * 60 * 60 * 1000 + 30 * 60 * 1000),
+      departure: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000),
+      arrival: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 30 * 60 * 1000),
       price: {
         value: 7.5 * parameters.nrOfPassengers,
         currency: 'EUR',
@@ -42,6 +42,7 @@ export const searchJourneys = async (
     const journeyDate = new Date(journey.departure);
     const searchDate = new Date(parameters.date);
     
+    // Check if the journey date is the same as the search date
     const isSameDay = 
       journeyDate.getFullYear() === searchDate.getFullYear() &&
       journeyDate.getMonth() === searchDate.getMonth() &&

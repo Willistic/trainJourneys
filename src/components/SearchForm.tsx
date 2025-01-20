@@ -3,15 +3,18 @@ import React, { useEffect, useRef, useState } from "react";
 import useLatest from "../hooks/useLatest";
 import type { FormErrors, JourneyParameters } from "../types/types";
 import { isDateInPast } from "../utils";
+import SearchButton from "./SearchButton";
 
 interface SearchFormProps {
 	onSubmit: (parameters: JourneyParameters) => void;
 }
 
 const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
+	// Use the useQueryState hook to manage the state of the form fields and also sync form values with the URL
 	const [origin, setOrigin] = useQueryState("origin");
 	const [destination, setDestination] = useQueryState("destination");
 	const [date, setDate] = useQueryState("date");
+	// parseInt is used to parse the value as an integer
 	const [passengers, setPassengers] = useQueryState(
 		"passengers",
 		parseAsInteger
@@ -53,7 +56,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 		}
 	}, []);
 
-	// This useEffect checks for errors (validation)
+	// This useEffect checks for validating the origin field whenever the origin value changes
 	useEffect(() => {
 		if (!formChanged.current) return;
 		if (!origin || !isValidLocation(origin)) {
@@ -66,6 +69,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 		}
 	}, [origin]);
 
+	// this useEffect checks for validating the destination field whenever the destination value changes
 	useEffect(() => {
 		if (!formChanged.current) return;
 		if (!destination || !isValidLocation(destination)) {
@@ -78,15 +82,20 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 		}
 	}, [destination]);
 
+	// this useEffect checks for validating the date field whenever the date value changes
 	useEffect(() => {
 		if (!formChanged.current) return;
 		if (!date || isDateInPast(new Date(date))) {
-			setErrors((prev) => ({...prev, date: "Date is required and must be in the future!"}));
+			setErrors((prev) => ({
+				...prev,
+				date: "Date is required and must be in the future!",
+			}));
 		} else {
 			setErrors((prev) => ({ ...prev, date: null }));
 		}
 	}, [date]);
 
+	// this useEffect checks for validating the passengers field whenever the passengers value changes
 	useEffect(() => {
 		if (!formChanged.current) return;
 		if (!passengers || passengers < 1 || passengers > 10) {
@@ -102,21 +111,25 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 	// Regular expression to check if the input contains only letters and spaces
 	const isValidLocation = (value: string) => /^[A-Za-z\s]+$/.test(value);
 
-	const isValid =
+	// Check if the form is valid
+	const isValid = !!(
 		origin &&
 		destination &&
 		date &&
 		!isDateInPast(new Date(date)) &&
 		passengers &&
 		passengers >= 1 &&
-		passengers <= 10;
+			passengers <= 10
+	)
 
+	// Handle the date change event
 	const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		const selectedDate = e.target.value;
 		formChanged.current = true;
 		setDate(selectedDate);
 	};
 
+	// Handle the form submission
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 
@@ -222,9 +235,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 					</span>
 				)}
 			</div>
-			<button type='submit' disabled={!isValid}>
-				Search
-			</button>
+			<SearchButton isValid={isValid} />
 		</form>
 	);
 };
