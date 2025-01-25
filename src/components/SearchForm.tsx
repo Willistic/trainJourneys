@@ -1,8 +1,11 @@
-import { parseAsInteger, useQueryState } from "nuqs";
 import React, { useEffect, useRef, useState } from "react";
+import { useQueryState, parseAsInteger } from "nuqs";
 import useLatest from "../hooks/useLatest";
-import type { FormErrors, JourneyParameters } from "../types/types";
+import { FormErrors, JourneyParameters } from "../types/types";
 import { isDateInPast } from "../utils";
+import InputField from "./InputField";
+import DateField from "./DateField";
+import NumberField from "./NrOfPassengersField";
 import SearchButton from "./SearchButton";
 
 interface SearchFormProps {
@@ -118,32 +121,12 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 		date &&
 		!isDateInPast(new Date(date)) &&
 		passengers &&
-		passengers >= 1 &&
-			passengers <= 10
+		passengers >= 1 && passengers <= 10
 	)
 
-	// Handle the date change event
-	const handleDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const selectedDate = e.target.value;
-		formChanged.current = true;
-		setDate(selectedDate);
-	};
-
-	// Handle the form submission
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-
-		// Validate the origin and destination fields
-		if (
-			!origin ||
-			!isValidLocation(origin) ||
-			!destination ||
-			!isValidLocation(destination)
-		) {
-			return;
-		}
-
-		// If everything is valid, submit the form
+		
 		if (isValid && passengers && passengers >= 1) {
 			onSubmit({
 				origin,
@@ -156,85 +139,49 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSubmit }) => {
 
 	return (
 		<form onSubmit={handleSubmit} aria-labelledby='search-form-title'>
-			<div className='flex-col'>
-				<label htmlFor='origin'>Origin</label>
-				<input
-					id='origin'
-					type='text'
-					value={origin || ""}
-					onChange={(e) => {
-						setOrigin(e.target.value);
-						formChanged.current = true;
-					}}
-					aria-invalid={!!errors.origin}
-					aria-describedby='origin-error'
-					required
-				/>
-				{errors.origin && (
-					<span id='origin-error' className='error'>
-						{errors.origin}
-					</span>
-				)}
-			</div>
-			<div className='flex-col'>
-				<label htmlFor='destination'>Destination</label>
-				<input
-					id='destination'
-					type='text'
-					value={destination || ""}
-					onChange={(e) => {
-						setDestination(e.target.value);
-						formChanged.current = true;
-					}}
-					aria-invalid={!!errors.destination}
-					aria-describedby='destination-error'
-					required
-				/>
-				{errors.destination && (
-					<span id='destination-error' className='error'>
-						{errors.destination}
-					</span>
-				)}
-			</div>
-			<div className='flex-col'>
-				<label htmlFor='date'>Date</label>
-				<input
-					id='date'
-					type='date'
-					value={date || ""}
-					onChange={handleDateChange}
-					aria-invalid={!!errors.date}
-					aria-describedby='date-error'
-					required
-				/>
-				{errors.date && (
-					<span id='date-error' className='error'>
-						{errors.date}
-					</span>
-				)}
-			</div>
-			<div className='flex-col'>
-				<label htmlFor='passengers'>Passengers</label>
-				<input
-					id='passengers'
-					type='number'
-					value={passengers || ""}
-					onChange={(e) => {
-						setPassengers(Number(e.target.value));
-						formChanged.current = true;
-					}}
-					aria-invalid={!!errors.passengers}
-					aria-describedby='passengers-error'
-					min='1'
-					max='10'
-					required
-				/>
-				{errors.passengers && (
-					<span id='passengers-error' className='error'>
-						{errors.passengers}
-					</span>
-				)}
-			</div>
+			<InputField
+				id='origin'
+				label='Origin'
+				value={origin || ""}
+				onChange={(e) => {
+					setOrigin(e.target.value);
+					formChanged.current = true;
+				}}
+				error={errors.origin}
+			/>
+			<InputField
+				id='destination'
+				label='Destination'
+				value={destination || ""}
+				onChange={(e) => {
+					setDestination(e.target.value);
+					formChanged.current = true;
+				}}
+				error={errors.destination}
+			/>
+			<DateField
+				id='date'
+				label='Date'
+				value={date || ""}
+				onChange={(e) => {
+					const selectedDate = e.target.value;
+					formChanged.current = true;
+					setDate(selectedDate);
+				}}
+				error={errors.date}
+			/>
+			<NumberField
+				id='passengers'
+				label='Passengers'
+				value={passengers || ""}
+				onChange={(e) => {
+					setPassengers(Number(e.target.value));
+					formChanged.current = true;
+				}}
+				min={1}
+				max={10}
+				error={errors.passengers}
+			/>
 			<SearchButton isValid={isValid} />
 		</form>
 	);
