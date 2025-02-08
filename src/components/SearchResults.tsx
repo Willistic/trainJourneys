@@ -15,9 +15,7 @@ const SearchResults: React.FC<SearchResultsProps> = ({ journeys, error }) => {
 
 	if (journeys.length === 0) {
 		return (
-			<div className='block center text-center margin-top-large'>
-				No results
-			</div>
+			<div className='block center text-center margin-top-large'>No results</div>
 		);
 	}
 
