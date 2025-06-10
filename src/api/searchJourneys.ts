@@ -3,13 +3,14 @@ import { JourneyParameters, Journeys } from '../types/types';
 export const searchJourneys = async (
   parameters: JourneyParameters
 ): Promise<Journeys> => {
+  const searchDate = new Date(parameters.date)
   // Mock data
   const mockJourneys: Journeys = [
     {
       origin: 'Enschede',
       destination: 'Hengelo',
-      departure: new Date(),
-      arrival: new Date(new Date().getTime() + 10 * 60 * 1000),
+      departure: searchDate,
+      arrival: new Date(searchDate.getTime() + 10 * 60 * 1000),
       price: {
         value: 6.0 * parameters.nrOfPassengers,
         currency: 'EUR',
@@ -18,8 +19,8 @@ export const searchJourneys = async (
     {
       origin: 'Enschede',
       destination: 'Hengelo',
-      departure: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000),
-      arrival: new Date(new Date().getTime() + 5 * 24 * 60 * 60 * 1000 + 15 * 60 * 1000),
+      departure: searchDate,
+      arrival: new Date(searchDate.getTime() + 30 * 60 * 1000),
       price: {
         value: 5.0 * parameters.nrOfPassengers,
         currency: 'EUR',
@@ -28,8 +29,8 @@ export const searchJourneys = async (
     {
       origin: 'Enschede',
       destination: 'Almelo',
-      departure: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000),
-      arrival: new Date(new Date().getTime() + 1 * 24 * 60 * 60 * 1000 + 30 * 60 * 1000),
+      departure: searchDate,
+      arrival: new Date(searchDate.getTime() + 10 * 60 * 1000),
       price: {
         value: 7.5 * parameters.nrOfPassengers,
         currency: 'EUR',
